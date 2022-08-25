@@ -1,0 +1,56 @@
+Props:
+passing data from one to antoher component (from parent to child)
+paretn to grand child : first pass parent to child, then child will pass same data to grandchild 
+(child do need the data, so it is just passing)-extra code/unnecessary code in child 
+
+Problem with props aka props drilling:  this is drilling 
+
+
+Context is used for (global) state management
+
+usecontext in parent to save data . then usecontext in gradchild to get data. child is free now 
+{
+    userid: sdf,
+    token: asdf,
+    isLoggedIn: true, 
+    user: {
+        first_name: sdf, 
+        last_name: asdf,
+        age: 34
+    }
+}
+
+whole application can use context, add or delete from context 
+
+
+
+// in action object you have two keys: 1. type 2. payload (data)
+// {type: 'GET_USER', payload: {name: 'sdf', email: 'sdf@SDF'}}
+// {type: 'GET_PRODUCTS', payload: {name: 'asdf', price: 23}}
+
+//  actions (type and payload. it tells what we want to do. most disliked step), 
+// reducer (has swithc case based on actions. and update the state accordingly), 
+// reducer takes old state, and returns updated state
+// and store (it's simplest. also called global state. combineReduers and initialize your state)
+
+
+// next class 
+// mutability , destructing or map or and why not assignment operator 
+// useSelector, useDispatch 
+
+export function user(state, action) {
+    console.log('in context reducer', action)
+    switch (action.type) {
+      case "LOGGED_IN_USER":
+        return { ...state, user: {...action.payload} };
+      case "GET_USER": 
+        return { ...state, user: {...action.payload} };
+
+      case "GET_PRODUCTS": {
+        return { ...state, product: {...action.payload} };
+
+      }
+      default:
+        return state;
+    }
+  }

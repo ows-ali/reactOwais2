@@ -87,6 +87,18 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
+//=================== EMAIL LOGIN ==============
+router.post("/logout", async (req, res) => {
+  // res.cookie("connect.sid", '');
+  res.clearCookie('connect.sid');
+
+  // res.send('success')
+  console.log('in logout')
+  res.json({ sucess: true });
+
+})
+
 //=================== EMAIL LOGIN ==============
 router.post("/login", async (req, res) => {
   //LETS VALIDATE THE DATA BEFORE
@@ -205,4 +217,27 @@ router.put("/allusers", async (req, res, next) => {
   }
 });
 
+//check toekn for every api request, which requires user to be logged in 
+// use req.headers instead of cookies to get the token
+
+router.get("/allusersdummy/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({ id: req.params._id });
+    console.log('headers',req.headers)
+    console.log('header authorization',req.headers.authorization)
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.post("/allusersdummypost/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({ id: req.params._id });
+    console.log('req body', req.body)
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;

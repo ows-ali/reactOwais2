@@ -13,17 +13,17 @@ const path = require("path");
 const server = http.createServer(app);
 const cors = require("cors");
 
-app.use(
-  session({
-    secret: config.JWT_SECRET,
-    saveUninitialized: false,
-    resave: true,
-    store: new mongoStore({
-      url: process.env.DB_CONNECT,
-      ttl: 1 * 24 * 60 * 60,
-    }),
-  })
-);
+// app.use(
+//   session({
+//     secret: config.JWT_SECRET,
+//     saveUninitialized: false,
+//     resave: true,
+//     store: new mongoStore({
+//       url: process.env.DB_CONNECT,
+//       ttl: 1 * 24 * 60 * 60,
+//     }),
+//   }) 
+// );
 
 //Middleware
 app.use(express.json());
@@ -36,7 +36,9 @@ app.use(
   })
 );
 
+
 //Import routes
+//create separate route file for users. shoule be require("./routes/user")
 const postsRoute = require("./routes/auth");
 const User = require("./models/userModel");
 

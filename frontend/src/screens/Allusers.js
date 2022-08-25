@@ -4,10 +4,76 @@ import axios from "axios";
 import $ from "jquery";
 import Footer from "../components/Footer";
 import LoggedInNavbar from "../components/LoggedInNavbar";
+import {   useNavigate, } from "react-router-dom";
 
 const Allusers = () => {
+  let navigate = useNavigate();
+
   useEffect(() => {
+
+    // if a user is logged in 
+    // step 1. send request to server (using cookies), nd check if logged in or not - and keep it in localstorage if logged in or not
+    // step 2. conditional rendering
+
+    //you can replace below condition. instead of checking from localstorage, you can get the status/token from Context or Redux
+    
+    let status =  localStorage.getItem("isLoggedIn")
+    // alert(localStorage.getItem("isLoggedIn"))
+    console.log('islogged in ', status )
+    if (JSON.parse(localStorage.getItem("isLoggedIn")) != true)
+    // if (constextState.isLoggedIn != true)
+    {
+      navigate('/')
+      return 
+    }
+
     setUserId(localStorage.getItem("userId"));
+
+    const options = {
+      url: "http://localhost:4000/api/users/allusersdummy/" +      localStorage.getItem("userId"),
+      method: 'GET', // in capital
+      headers: {
+        'Authorization': "Bearer mytokenherefromlocalstorage" ,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      data: {
+        name: 'David',
+        age: 45
+      }
+    };
+    axios(options)
+    .then(response => {
+      console.log(response.status);
+    })
+    .catch(err=>{
+      console.log('err', err)
+    });
+
+    const options2 = {
+      url: "http://localhost:4000/api/users/allusersdummypost/" +      localStorage.getItem("userId"),
+      method: 'POST',
+      headers: {
+        'Authorization': "Bearer mytokenherefromlocalstorage",
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      data: {
+        name: 'David',
+        age: 45
+      }
+    };
+    axios(options2)
+    .then(response => {
+      console.log(response.status);
+    })
+    .catch(err=>{
+      console.log('err', err)
+    });
+
+
+
+    // always write a catch block
     axios
       .get(
         "http://localhost:4000/api/users/allusers/" +
@@ -18,6 +84,8 @@ const Allusers = () => {
           setUserInfo(response.data);
         }
       });
+
+
   }, []);
 
   const [userInfo, setUserInfo] = useState({});
